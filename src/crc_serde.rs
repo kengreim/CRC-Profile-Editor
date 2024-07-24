@@ -54,6 +54,7 @@ pub struct WindowSettings {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct AsdexDisplaySettings {
     pub bookmarks: Vec<DisplayBookmark>,
     pub night_mode: bool,
@@ -76,6 +77,7 @@ pub struct AsdexDisplaySettings {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct TowerCabDisplaySettings {
     pub center: Point,
     pub range: f64,
@@ -108,6 +110,7 @@ pub struct TowerCabDisplaySettings {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct StarsDisplaySettings {
     pub center: Option<Point>,
     pub range: f64,
@@ -130,6 +133,7 @@ pub struct StarsDisplaySettings {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct EramDisplaySettings {
     pub center: Point,
     pub top_down_mode_enabled: bool,
@@ -215,6 +219,7 @@ pub struct DisplayBookmark {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct AsdexPrefSet {
     pub id: Option<String>,
     pub title: Option<String>,
@@ -242,6 +247,7 @@ pub struct AsdexPrefSet {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct StarsPrefSet {
     pub id: Option<String>,
     pub version: i32,
@@ -317,7 +323,7 @@ pub struct StarsPrefSet {
     pub dcb_location: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct AltitudeFilter {
@@ -329,6 +335,7 @@ pub struct AltitudeFilter {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct Window {
     pub id: String,
     pub display_type: String,
@@ -356,7 +363,7 @@ pub struct Window {
     pub show_vector_line: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct Bounds {
@@ -379,9 +386,10 @@ pub struct Area {
     pub points: Vec<Point>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct Traits {
     pub data_blocks_off: bool,
     pub full_data_blocks: bool,
@@ -399,9 +407,10 @@ pub struct Traits {
     pub leader_direction: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_field_names)]
 pub struct Margins {
     pub left_margin: Option<i32>,
     pub right_margin: Option<i32>,
@@ -409,7 +418,7 @@ pub struct Margins {
     pub bottom_margin: Option<i32>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct DisplayWindowBookmark {
@@ -426,7 +435,7 @@ pub struct InformationWindowSettings {
     pub window_settings: WindowSettings,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct Bcgs {
@@ -495,7 +504,7 @@ pub struct Bcgs {
     pub map_group40: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct BcgModifiers {
@@ -505,7 +514,7 @@ pub struct BcgModifiers {
     pub dwell: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct FontSizes {
@@ -518,7 +527,7 @@ pub struct FontSizes {
     pub portal: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct TimeViewSettings {
@@ -529,7 +538,7 @@ pub struct TimeViewSettings {
     pub is_opaque: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct Location {
@@ -537,7 +546,7 @@ pub struct Location {
     pub anchor: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct McaViewSettings {
@@ -548,7 +557,7 @@ pub struct McaViewSettings {
     pub brightness: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct ResponseAreaViewSettings {
@@ -558,9 +567,10 @@ pub struct ResponseAreaViewSettings {
     pub brightness: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct AltimeterSettingsViewSettings {
     pub show_tearoffs: bool,
     pub lines: i32,
@@ -574,9 +584,10 @@ pub struct AltimeterSettingsViewSettings {
     pub is_visible: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct BeaconCodeViewSettings {
     pub lines: i32,
     pub columns: i32,
@@ -589,9 +600,10 @@ pub struct BeaconCodeViewSettings {
     pub is_visible: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct WeatherStationReportViewSettings {
     pub show_tearoffs: bool,
     pub lines: i32,
@@ -603,9 +615,10 @@ pub struct WeatherStationReportViewSettings {
     pub is_visible: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
+#[allow(clippy::struct_excessive_bools)]
 pub struct CrrViewSettings {
     pub lines: i32,
     pub font_size: i32,
@@ -619,7 +632,7 @@ pub struct CrrViewSettings {
     pub is_visible: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct ColorBrightness {
@@ -629,7 +642,7 @@ pub struct ColorBrightness {
     pub yellow: i32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct ChecklistViewSettings {
@@ -643,7 +656,7 @@ pub struct ChecklistViewSettings {
     pub is_visible: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct DisplayPrecedence {
@@ -651,7 +664,7 @@ pub struct DisplayPrecedence {
     pub id: Option<String>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct Tearoff {

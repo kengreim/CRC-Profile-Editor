@@ -1,3 +1,5 @@
+#![warn(clippy::all, clippy::pedantic, clippy::nursery)]
+
 use crate::crc_serde::CrcProfile;
 use std::fs::{read_dir, File};
 use std::io::Read;
@@ -12,14 +14,14 @@ fn main() -> std::io::Result<()> {
     for file in read_dir(&profiles_dir)? {
         let file = file?;
         if file.file_type().is_ok_and(|f| f.is_file())
-            && file
-                .file_name()
-                .to_str()
-                .is_some_and(|s| s.ends_with(".json"))
+            && file.file_name().to_str().is_some_and(|s| {
+                std::path::Path::new(s)
+                    .extension()
+                    .map_or(false, |ext| ext.eq_ignore_ascii_case("json"))
+            })
         {
-
             let filename = file.file_name();
-            println!("{:?}", filename);
+            println!("{filename:?}");
 
             let mut file_path = profiles_dir.clone();
             file_path.push(filename);
@@ -35,7 +37,7 @@ fn main() -> std::io::Result<()> {
                 Err(err) => {
                     let path = err.path().to_string();
                     println!("{path}");
-                    println!("{:?}", err)
+                    println!("{err:?}");
                 }
             }
         }
