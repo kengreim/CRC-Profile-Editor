@@ -16,10 +16,10 @@ pub struct CrcProfile {
     pub role: String,
     pub controller_info: String,
     pub display_window_settings: Vec<DisplayWindowSettings>,
-    pub controller_list_settings: ControllerListSettings,
-    pub flight_plan_editor_settings: FlightPlanEditorSettings,
-    pub messages_area_settings: MessagesAreaSettings,
-    pub voice_switch_settings: VoiceSwitchSettings,
+    pub controller_list_settings: InformationWindowSettings,
+    pub flight_plan_editor_settings: InformationWindowSettings,
+    pub messages_area_settings: InformationWindowSettings,
+    pub voice_switch_settings: InformationWindowSettings,
     pub bookmarks: Vec<Value>,
     pub selected_beacon_codes: Vec<Value>,
     pub invert_numeric_keypad: Option<bool>,
@@ -55,83 +55,44 @@ pub struct DisplaySettings {
     pub type_field: String,
     pub center: Option<Point>,
     pub range: Option<f64>,
-    #[serde(rename = "Bookmarks")]
     pub bookmarks: Vec<Bookmark>,
-    #[serde(rename = "TopDownModeEnabled")]
     pub top_down_mode_enabled: Option<bool>,
-    #[serde(rename = "GroundTargetLeaderLength")]
     pub ground_target_leader_length: Option<i64>,
-    #[serde(rename = "GroundTargetLeaderDirection")]
     pub ground_target_leader_direction: Option<String>,
-    #[serde(rename = "AreaId")]
     pub area_id: Option<String>,
-    #[serde(rename = "PositionId")]
     pub position_id: Option<String>,
-    #[serde(rename = "IsDcbVisible")]
     pub is_dcb_visible: Option<bool>,
-    #[serde(rename = "SignOnListShowAll")]
     pub sign_on_list_show_all: Option<bool>,
-    #[serde(rename = "DisplayWindsInSsa")]
     pub display_winds_in_ssa: Option<bool>,
-    #[serde(rename = "CurrentPrefSet")]
     pub current_pref_set: Option<CurrentPrefSet>,
-    #[serde(rename = "Id")]
     pub id: String,
-    #[serde(rename = "FacilityId")]
     pub facility_id: String,
-    #[serde(rename = "InvertNumericKeypad")]
     pub invert_numeric_keypad: Option<bool>,
-    #[serde(rename = "DisableMousePanZoom")]
     pub disable_mouse_pan_zoom: bool,
-    #[serde(rename = "NightMode")]
     pub night_mode: Option<bool>,
-    #[serde(rename = "Volume")]
     pub volume: Option<i64>,
-    #[serde(rename = "DcbOff")]
     pub dcb_off: Option<bool>,
-    #[serde(rename = "ActivePositionIds")]
     pub active_position_ids: Option<Vec<String>>,
-    #[serde(rename = "ShowDcb")]
     pub show_dcb: Option<bool>,
-    #[serde(rename = "StatusTextFontSize")]
     pub status_text_font_size: Option<i64>,
-    #[serde(rename = "ShowStatusText")]
     pub show_status_text: Option<bool>,
-    #[serde(rename = "ShowFullMetar")]
     pub show_full_metar: Option<bool>,
-    #[serde(rename = "StatusTextAtTop")]
     pub status_text_at_top: Option<bool>,
-    #[serde(rename = "OperatingInitials")]
     pub operating_initials: Option<String>,
-    #[serde(rename = "Rotation")]
     pub rotation: Option<f64>,
-    #[serde(rename = "DataBlockFontSize")]
     pub data_block_font_size: Option<i64>,
-    #[serde(rename = "ShowDataBlocks")]
     pub show_data_blocks: Option<bool>,
-    #[serde(rename = "CallsignDisplay")]
     pub callsign_display: Option<String>,
-    #[serde(rename = "ShowTypeCodeAndAltitude")]
     pub show_type_code_and_altitude: Option<bool>,
-    #[serde(rename = "LeaderLength")]
     pub leader_length: Option<i64>,
-    #[serde(rename = "LeaderDirection")]
     pub leader_direction: Option<String>,
-    #[serde(rename = "BackgroundImageBrightness")]
     pub background_image_brightness: Option<i64>,
-    #[serde(rename = "ShowBackgroundImage")]
     pub show_background_image: Option<bool>,
-    #[serde(rename = "ShowHighResBackgroundImage")]
     pub show_high_res_background_image: Option<bool>,
-    #[serde(rename = "ShowAirportDiagram")]
     pub show_airport_diagram: Option<bool>,
-    #[serde(rename = "BackgroundColor")]
     pub background_color: Option<String>,
-    #[serde(rename = "DataBlockColor")]
     pub data_block_color: Option<String>,
-    #[serde(rename = "AircraftColor")]
     pub aircraft_color: Option<String>,
-    #[serde(rename = "StatusTextColor")]
     pub status_text_color: Option<String>,
 }
 
@@ -143,27 +104,13 @@ pub struct Point {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct Bookmark {
-    #[serde(rename = "Index")]
     pub index: i64,
-    #[serde(rename = "Center")]
-    pub center: Center2,
-    #[serde(rename = "Range")]
+    pub center: Point,
     pub range: f64,
-    #[serde(rename = "TopDownModeEnabled")]
     pub top_down_mode_enabled: Option<bool>,
-    #[serde(rename = "Rotation")]
     pub rotation: Option<f64>,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Center2 {
-    #[serde(rename = "Lat")]
-    pub lat: f64,
-    #[serde(rename = "Lon")]
-    pub lon: f64,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -291,9 +238,9 @@ pub struct CurrentPrefSet {
     #[serde(default)]
     pub selected_video_map_ids: Vec<i64>,
     #[serde(rename = "AltitudeFilterUnassociated")]
-    pub altitude_filter_unassociated: Option<AltitudeFilterUnassociated>,
+    pub altitude_filter_unassociated: Option<AltitudeFilter>,
     #[serde(rename = "AltitudeFilterAssociated")]
-    pub altitude_filter_associated: Option<AltitudeFilterAssociated>,
+    pub altitude_filter_associated: Option<AltitudeFilter>,
     #[serde(rename = "QuickLookedTcps")]
     #[serde(default)]
     pub quick_looked_tcps: Vec<Value>,
@@ -311,7 +258,7 @@ pub struct CurrentPrefSet {
     #[serde(rename = "ShowCoastList")]
     pub show_coast_list: Option<bool>,
     #[serde(rename = "CoastListLocation")]
-    pub coast_list_location: Option<ListMargins>,
+    pub coast_list_location: Option<Margins>,
     #[serde(rename = "DcbPosition")]
     pub dcb_position: Option<String>,
     #[serde(rename = "ShowAltitudeInDb")]
@@ -329,7 +276,7 @@ pub struct CurrentPrefSet {
     #[serde(rename = "ShowScratchpadsInDb")]
     pub show_scratchpads_in_db: Option<bool>,
     #[serde(rename = "AlertMessageLocation")]
-    pub alert_message_location: Option<ListMargins>,
+    pub alert_message_location: Option<Margins>,
     #[serde(rename = "VectorLength")]
     pub vector_length: Option<i64>,
     #[serde(rename = "ListsBrightness")]
@@ -345,24 +292,10 @@ pub struct CurrentPrefSet {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct AltitudeFilterUnassociated {
-    #[serde(rename = "Low")]
+#[serde(rename_all = "PascalCase")]
+pub struct AltitudeFilter {
     pub low: i64,
-    #[serde(rename = "High")]
     pub high: i64,
-    #[serde(rename = "IsValid")]
-    pub is_valid: bool,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct AltitudeFilterAssociated {
-    #[serde(rename = "Low")]
-    pub low: i64,
-    #[serde(rename = "High")]
-    pub high: i64,
-    #[serde(rename = "IsValid")]
     pub is_valid: bool,
 }
 
@@ -420,177 +353,63 @@ pub struct Window {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct Bounds {
-    #[serde(rename = "Location")]
-    pub location: ListMargins,
-    #[serde(rename = "Size")]
+    pub location: Margins,
     pub size: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct DataBlockTraitArea {
-    #[serde(rename = "Area")]
     pub area: Area,
-    #[serde(rename = "Traits")]
     pub traits: Traits,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct Area {
-    #[serde(rename = "Points")]
     pub points: Vec<Point>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct Traits {
-    #[serde(rename = "DataBlocksOff")]
     pub data_blocks_off: bool,
-    #[serde(rename = "FullDataBlocks")]
     pub full_data_blocks: bool,
-    #[serde(rename = "ShowAltitude")]
     pub show_altitude: bool,
-    #[serde(rename = "ShowAircraftType")]
     pub show_aircraft_type: bool,
-    #[serde(rename = "ShowSensors")]
     pub show_sensors: bool,
-    #[serde(rename = "ShowAircraftCategory")]
     pub show_aircraft_category: bool,
-    #[serde(rename = "ShowFix")]
     pub show_fix: bool,
-    #[serde(rename = "ShowVelocity")]
     pub show_velocity: bool,
-    #[serde(rename = "ShowScratchpads")]
     pub show_scratchpads: bool,
-    #[serde(rename = "DataBlocksCharSize")]
     pub data_blocks_char_size: i64,
-    #[serde(rename = "DataBlocksBrightness")]
     pub data_blocks_brightness: i64,
-    #[serde(rename = "ShowVector")]
     pub show_vector: bool,
-    #[serde(rename = "LeaderLength")]
     pub leader_length: i64,
-    #[serde(rename = "LeaderDirection")]
     pub leader_direction: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ListMargins {
-    #[serde(rename = "LeftMargin")]
+#[serde(rename_all = "PascalCase")]
+pub struct Margins {
     pub left_margin: Option<i16>,
-    #[serde(rename = "RightMargin")]
     pub right_margin: Option<i16>,
-    #[serde(rename = "TopMargin")]
     pub top_margin: Option<i16>,
-    #[serde(rename = "BottomMargin")]
     pub bottom_margin: Option<i16>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 pub struct Bookmark2 {
-    #[serde(rename = "Index")]
     pub index: i64,
-    #[serde(rename = "SelectedDisplayId")]
     pub selected_display_id: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ControllerListSettings {
-    #[serde(rename = "Type")]
+#[serde(rename_all = "PascalCase")]
+pub struct InformationWindowSettings {
     pub type_field: String,
-    #[serde(rename = "WindowSettings")]
-    pub window_settings: WindowSettings2,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct WindowSettings2 {
-    #[serde(rename = "IsVisible")]
-    pub is_visible: bool,
-    #[serde(rename = "Bounds")]
-    pub bounds: String,
-    #[serde(rename = "ScaleFactor")]
-    pub scale_factor: f64,
-    #[serde(rename = "IsMaximized")]
-    pub is_maximized: bool,
-    #[serde(rename = "ShowTitleBar")]
-    pub show_title_bar: bool,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct FlightPlanEditorSettings {
-    #[serde(rename = "Type")]
-    pub type_field: String,
-    #[serde(rename = "WindowSettings")]
-    pub window_settings: WindowSettings3,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct WindowSettings3 {
-    #[serde(rename = "IsVisible")]
-    pub is_visible: bool,
-    #[serde(rename = "Bounds")]
-    pub bounds: String,
-    #[serde(rename = "ScaleFactor")]
-    pub scale_factor: f64,
-    #[serde(rename = "IsMaximized")]
-    pub is_maximized: bool,
-    #[serde(rename = "ShowTitleBar")]
-    pub show_title_bar: bool,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MessagesAreaSettings {
-    #[serde(rename = "Type")]
-    pub type_field: String,
-    #[serde(rename = "WindowSettings")]
-    pub window_settings: WindowSettings4,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct WindowSettings4 {
-    #[serde(rename = "IsVisible")]
-    pub is_visible: bool,
-    #[serde(rename = "Bounds")]
-    pub bounds: String,
-    #[serde(rename = "ScaleFactor")]
-    pub scale_factor: f64,
-    #[serde(rename = "IsMaximized")]
-    pub is_maximized: bool,
-    #[serde(rename = "ShowTitleBar")]
-    pub show_title_bar: bool,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct VoiceSwitchSettings {
-    #[serde(rename = "Type")]
-    pub type_field: String,
-    #[serde(rename = "WindowSettings")]
-    pub window_settings: WindowSettings5,
-}
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct WindowSettings5 {
-    #[serde(rename = "IsVisible")]
-    pub is_visible: bool,
-    #[serde(rename = "Bounds")]
-    pub bounds: String,
-    #[serde(rename = "ScaleFactor")]
-    pub scale_factor: f64,
-    #[serde(rename = "IsMaximized")]
-    pub is_maximized: bool,
-    #[serde(rename = "ShowTitleBar")]
-    pub show_title_bar: bool,
+    pub window_settings: WindowSettings,
 }
