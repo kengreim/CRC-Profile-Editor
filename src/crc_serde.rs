@@ -11,8 +11,8 @@ pub struct CrcProfile {
     pub name: String,
     pub last_used_at: String,
     pub artcc_id: String,
-    pub last_used_environment: String,
-    pub last_used_position_id: String,
+    pub last_used_environment: Option<String>,
+    pub last_used_position_id: Option<String>,
     pub network_rating: String,
     pub role: String,
     pub controller_info: String,
@@ -55,7 +55,6 @@ pub struct WindowSettings {
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct AsdexDisplaySettings {
-    // TODO -- does ASDEX display have center range and rotation?
     pub bookmarks: Vec<DisplayBookmark>,
     pub night_mode: bool,
     pub volume: i32,
@@ -67,10 +66,10 @@ pub struct AsdexDisplaySettings {
     pub show_full_metar: bool,
     pub status_text_at_top: bool,
     pub operating_initials: String,
-    pub current_pref_set: CurrentPrefSet,
+    pub current_pref_set: AsdexPrefSet,
     pub id: String,
     pub facility_id: String,
-    pub invert_numeric_keypad: bool,
+    pub invert_numeric_keypad: Option<bool>,
     pub disable_mouse_pan_zoom: bool,
 }
 
@@ -110,7 +109,7 @@ pub struct TowerCabDisplaySettings {
 #[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 pub struct StarsDisplaySettings {
-    pub center: Point,
+    pub center: Option<Point>,
     pub range: f64,
     pub bookmarks: Vec<DisplayBookmark>,
     pub top_down_mode_enabled: bool,
@@ -121,7 +120,7 @@ pub struct StarsDisplaySettings {
     pub is_dcb_visible: bool,
     pub sign_on_list_show_all: bool,
     pub display_winds_in_ssa: bool,
-    pub current_pref_set: CurrentPrefSet,
+    pub current_pref_set: StarsPrefSet,
     pub id: String,
     pub facility_id: String,
     pub invert_numeric_keypad: Option<bool>,
@@ -187,7 +186,7 @@ pub enum DisplaySettings {
     #[serde(rename = "Vatsim.Nas.Crc.Ui.Displays.TowerCab.Settings.TowerCabDisplaySettings, CRC")]
     TowerCab(TowerCabDisplaySettings),
     #[serde(rename = "Vatsim.Nas.Crc.Ui.Displays.Eram.Settings.EramDisplaySettings, CRC")]
-    Eram(EramDisplaySettings)
+    Eram(EramDisplaySettings),
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -213,198 +212,109 @@ pub struct DisplayBookmark {
     pub filters: Option<String>,
 }
 
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+#[serde(deny_unknown_fields)]
 pub struct AsdexPrefSet {
-
+    pub id: Option<String>,
+    pub title: Option<String>,
+    pub windows: Vec<Window>,
+    pub show_coast_list: bool,
+    pub coast_list_location: Margins,
+    pub dcb_position: String,
+    pub show_altitude_in_db: bool,
+    pub show_aircraft_type_in_db: bool,
+    pub show_sensors_in_db: bool,
+    pub show_aircraft_category_in_db: bool,
+    pub show_fix_in_db: bool,
+    pub show_velocity_in_db: bool,
+    pub show_scratchpads_in_db: bool,
+    pub alert_message_location: Margins,
+    pub preview_area_location: Margins,
+    pub vector_length: i32,
+    pub lists_brightness: i32,
+    pub dcb_brightness: i32,
+    pub dcb_char_size: i32,
+    pub coast_suspend_char_size: i32,
+    pub preview_area_char_size: i32,
 }
-
-pub struct StarsPrefSet {
-
-}
-
-pub struct EramPrefSet {
-
-}
-
-
-
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
-pub struct CurrentPrefSet {
-    #[serde(rename = "Id")]
-    pub id: String,
-    #[serde(rename = "Version")]
-    pub version: Option<i32>,
-    #[serde(rename = "Name")]
+pub struct StarsPrefSet {
+    pub id: Option<String>,
+    pub version: i32,
     pub name: Option<String>,
-    #[serde(rename = "Range")]
-    pub range: Option<f64>,
-    #[serde(rename = "DisplayCenter")]
+    pub range: f64,
     pub display_center: Option<Point>,
-    #[serde(rename = "DisplayOffCenter")]
-    pub display_off_center: Option<bool>,
-    #[serde(rename = "RangeRingSpacing")]
-    pub range_ring_spacing: Option<i32>,
-    #[serde(rename = "RangeRingCenter")]
+    pub display_off_center: bool,
+    pub range_ring_spacing: i32,
     pub range_ring_center: Option<Point>,
-    #[serde(rename = "RangeRingsOffCenter")]
-    pub range_rings_off_center: Option<bool>,
-    #[serde(rename = "LeaderDirTracked")]
-    pub leader_dir_tracked: Option<String>,
-    #[serde(rename = "LeaderDirAssociated")]
-    pub leader_dir_associated: Option<String>,
-    #[serde(rename = "LeaderDirUnassociated")]
-    pub leader_dir_unassociated: Option<String>,
-    #[serde(rename = "LeaderLength")]
-    pub leader_length: Option<i32>,
-    #[serde(rename = "HistoryCount")]
-    pub history_count: Option<i32>,
-    #[serde(rename = "PtlLength")]
-    pub ptl_length: Option<f64>,
-    #[serde(rename = "PtlOwn")]
-    pub ptl_own: Option<bool>,
-    #[serde(rename = "PtlAll")]
-    pub ptl_all: Option<bool>,
-    #[serde(rename = "VisibleLists")]
-    pub visible_lists: Option<String>,
-    #[serde(rename = "SelectedVideoMapListType")]
-    pub selected_video_map_list_type: Option<String>,
-    #[serde(rename = "VisibleSsaFields")]
-    pub visible_ssa_fields: Option<String>,
-    #[serde(rename = "AllSsaFieldsVisible")]
-    pub all_ssa_fields_visible: Option<bool>,
-    #[serde(rename = "VisibleGiTextLines")]
-    pub visible_gi_text_lines: Option<String>,
-    #[serde(rename = "BrightnessDcb")]
-    pub brightness_dcb: Option<i32>,
-    #[serde(rename = "BrightnessMpa")]
-    pub brightness_mpa: Option<i32>,
-    #[serde(rename = "BrightnessMpb")]
-    pub brightness_mpb: Option<i32>,
-    #[serde(rename = "BrightnessFdb")]
-    pub brightness_fdb: Option<i32>,
-    #[serde(rename = "BrightnessLst")]
-    pub brightness_lst: Option<i32>,
-    #[serde(rename = "BrightnessPos")]
-    pub brightness_pos: Option<i32>,
-    #[serde(rename = "BrightnessLdb")]
-    pub brightness_ldb: Option<i32>,
-    #[serde(rename = "BrightnessOth")]
-    pub brightness_oth: Option<i32>,
-    #[serde(rename = "BrightnessTls")]
-    pub brightness_tls: Option<i32>,
-    #[serde(rename = "BrightnessRr")]
-    pub brightness_rr: Option<i32>,
-    #[serde(rename = "BrightnessCmp")]
-    pub brightness_cmp: Option<i32>,
-    #[serde(rename = "BrightnessBcn")]
-    pub brightness_bcn: Option<i32>,
-    #[serde(rename = "BrightnessPri")]
-    pub brightness_pri: Option<i32>,
-    #[serde(rename = "BrightnessHst")]
-    pub brightness_hst: Option<i32>,
-    #[serde(rename = "CharSizeDataBlocks")]
-    pub char_size_data_blocks: Option<i32>,
-    #[serde(rename = "CharSizeLists")]
-    pub char_size_lists: Option<i32>,
-    #[serde(rename = "CharSizeDcb")]
-    pub char_size_dcb: Option<i32>,
-    #[serde(rename = "CharSizeTools")]
-    pub char_size_tools: Option<i32>,
-    #[serde(rename = "CharSizePositionSymbols")]
-    pub char_size_position_symbols: Option<i32>,
-    #[serde(rename = "PreviewAreaLocation")]
-    pub preview_area_location: Value,
-    #[serde(rename = "SsaLocation")]
-    pub ssa_location: Option<String>,
-    #[serde(rename = "TabListLocation")]
-    pub tab_list_location: Option<String>,
-    #[serde(rename = "VfrListLocation")]
-    pub vfr_list_location: Option<String>,
-    #[serde(rename = "LaCaMciListLocation")]
-    pub la_ca_mci_list_location: Option<String>,
-    #[serde(rename = "CoastSuspendListLocation")]
-    pub coast_suspend_list_location: Option<String>,
-    #[serde(rename = "SignOnListLocation")]
-    pub sign_on_list_location: Option<String>,
-    #[serde(rename = "VideoMapListLocation")]
-    pub video_map_list_location: Option<String>,
-    #[serde(rename = "CrdaListLocation")]
-    pub crda_list_location: Option<String>,
+    pub range_rings_off_center: bool,
+    pub leader_dir_tracked: String,
+    pub leader_dir_associated: String,
+    pub leader_dir_unassociated: String,
+    pub leader_length: i32,
+    pub history_count: i32,
+    pub ptl_length: f64,
+    pub ptl_own: bool,
+    pub ptl_all: bool,
+    pub visible_lists: String,
+    pub selected_video_map_list_type: String,
+    pub visible_ssa_fields: String,
+    pub all_ssa_fields_visible: bool,
+    pub visible_gi_text_lines: String,
+    pub brightness_dcb: i32,
+    pub brightness_mpa: i32,
+    pub brightness_mpb: i32,
+    pub brightness_fdb: i32,
+    pub brightness_lst: i32,
+    pub brightness_pos: i32,
+    pub brightness_ldb: i32,
+    pub brightness_oth: i32,
+    pub brightness_tls: i32,
+    pub brightness_rr: i32,
+    pub brightness_cmp: i32,
+    pub brightness_bcn: i32,
+    pub brightness_pri: i32,
+    pub brightness_hst: i32,
+    pub char_size_data_blocks: i32,
+    pub char_size_lists: i32,
+    pub char_size_dcb: i32,
+    pub char_size_tools: i32,
+    pub char_size_position_symbols: i32,
+    pub preview_area_location: String,
+    pub ssa_location: String,
+    pub tab_list_location: String,
+    pub vfr_list_location: String,
+    pub la_ca_mci_list_location: String,
+    pub coast_suspend_list_location: String,
+    pub sign_on_list_location: String,
+    pub video_map_list_location: String,
+    pub crda_list_location: String,
     #[serde(rename = "TowerList1Location")]
-    pub tower_list1location: Option<String>,
+    pub tower_list1location: String,
     #[serde(rename = "TowerList2Location")]
-    pub tower_list2location: Option<String>,
+    pub tower_list2location: String,
     #[serde(rename = "TowerList3Location")]
-    pub tower_list3location: Option<String>,
-    #[serde(rename = "TabListSize")]
-    pub tab_list_size: Option<i32>,
-    #[serde(rename = "CoastSuspendListSize")]
-    pub coast_suspend_list_size: Option<i32>,
-    #[serde(rename = "VfrListSize")]
-    pub vfr_list_size: Option<i32>,
+    pub tower_list3location: String,
+    pub tab_list_size: i32,
+    pub coast_suspend_list_size: i32,
+    pub vfr_list_size: i32,
     #[serde(rename = "TowerList1Size")]
-    pub tower_list1size: Option<i32>,
+    pub tower_list1size: i32,
     #[serde(rename = "TowerList2Size")]
-    pub tower_list2size: Option<i32>,
+    pub tower_list2size: i32,
     #[serde(rename = "TowerList3Size")]
-    pub tower_list3size: Option<i32>,
-    #[serde(rename = "SelectedVideoMapIds")]
-    #[serde(default)]
+    pub tower_list3size: i32,
     pub selected_video_map_ids: Vec<i32>,
-    #[serde(rename = "AltitudeFilterUnassociated")]
-    pub altitude_filter_unassociated: Option<AltitudeFilter>,
-    #[serde(rename = "AltitudeFilterAssociated")]
-    pub altitude_filter_associated: Option<AltitudeFilter>,
-    #[serde(rename = "QuickLookedTcps")]
-    #[serde(default)]
+    pub altitude_filter_unassociated: AltitudeFilter,
+    pub altitude_filter_associated: AltitudeFilter,
     pub quick_looked_tcps: Vec<Value>,
-    #[serde(rename = "QuickLookAll")]
-    pub quick_look_all: Option<bool>,
-    #[serde(rename = "SelectedBeaconCodes")]
-    #[serde(default)]
+    pub quick_look_all: bool,
     pub selected_beacon_codes: Vec<Value>,
-    #[serde(rename = "DcbLocation")]
-    pub dcb_location: Option<String>,
-    #[serde(rename = "Title")]
-    pub title: Option<String>,
-    #[serde(rename = "Windows")]
-    pub windows: Option<Vec<Window>>,
-    #[serde(rename = "ShowCoastList")]
-    pub show_coast_list: Option<bool>,
-    #[serde(rename = "CoastListLocation")]
-    pub coast_list_location: Option<Margins>,
-    #[serde(rename = "DcbPosition")]
-    pub dcb_position: Option<String>,
-    #[serde(rename = "ShowAltitudeInDb")]
-    pub show_altitude_in_db: Option<bool>,
-    #[serde(rename = "ShowAircraftTypeInDb")]
-    pub show_aircraft_type_in_db: Option<bool>,
-    #[serde(rename = "ShowSensorsInDb")]
-    pub show_sensors_in_db: Option<bool>,
-    #[serde(rename = "ShowAircraftCategoryInDb")]
-    pub show_aircraft_category_in_db: Option<bool>,
-    #[serde(rename = "ShowFixInDb")]
-    pub show_fix_in_db: Option<bool>,
-    #[serde(rename = "ShowVelocityInDb")]
-    pub show_velocity_in_db: Option<bool>,
-    #[serde(rename = "ShowScratchpadsInDb")]
-    pub show_scratchpads_in_db: Option<bool>,
-    #[serde(rename = "AlertMessageLocation")]
-    pub alert_message_location: Option<Margins>,
-    #[serde(rename = "VectorLength")]
-    pub vector_length: Option<i32>,
-    #[serde(rename = "ListsBrightness")]
-    pub lists_brightness: Option<i32>,
-    #[serde(rename = "DcbBrightness")]
-    pub dcb_brightness: Option<i32>,
-    #[serde(rename = "DcbCharSize")]
-    pub dcb_char_size: Option<i32>,
-    #[serde(rename = "CoastSuspendCharSize")]
-    pub coast_suspend_char_size: Option<i32>,
-    #[serde(rename = "PreviewAreaCharSize")]
-    pub preview_area_char_size: Option<i32>,
+    pub dcb_location: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
