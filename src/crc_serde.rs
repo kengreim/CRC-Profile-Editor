@@ -20,7 +20,7 @@ pub struct CrcProfile {
     pub flight_plan_editor_settings: InformationWindowSettings,
     pub messages_area_settings: InformationWindowSettings,
     pub voice_switch_settings: Option<InformationWindowSettings>, // Option to deal with old profiles
-    pub bookmarks: Vec<DisplayWindowBookmark>,
+    pub bookmarks: Vec<GlobalBookmark>,
     pub selected_beacon_codes: Vec<String>,
     pub invert_numeric_keypad: Option<bool>,
     pub secondary_voice_switch_position_ids: Option<Vec<String>>, // Option to deal with old profiles
@@ -424,6 +424,14 @@ pub struct Margins {
 pub struct DisplayWindowBookmark {
     pub index: i32,
     pub selected_display_id: String,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+#[serde(deny_unknown_fields)]
+pub struct GlobalBookmark {
+    pub index: i32,
+    pub selected_display_window_id: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
