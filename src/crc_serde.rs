@@ -1,6 +1,5 @@
 use serde::Deserialize;
 use serde::Serialize;
-use serde_json::Value;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -20,11 +19,11 @@ pub struct CrcProfile {
     pub controller_list_settings: InformationWindowSettings,
     pub flight_plan_editor_settings: InformationWindowSettings,
     pub messages_area_settings: InformationWindowSettings,
-    pub voice_switch_settings: InformationWindowSettings,
-    pub bookmarks: Vec<Value>,
+    pub voice_switch_settings: Option<InformationWindowSettings>, // Option to deal with old profiles
+    pub bookmarks: Vec<DisplayWindowBookmark>,
     pub selected_beacon_codes: Vec<String>,
     pub invert_numeric_keypad: Option<bool>,
-    pub secondary_voice_switch_position_ids: Vec<String>,
+    pub secondary_voice_switch_position_ids: Option<Vec<String>>, // Option to deal with old profiles
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -182,6 +181,7 @@ pub struct EramDisplaySettings {
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "$type")]
+#[allow(clippy::large_enum_variant)]
 pub enum DisplaySettings {
     #[serde(rename = "Vatsim.Nas.Crc.Ui.Displays.Asdex.Settings.AsdexDisplaySettings, CRC")]
     Asdex(AsdexDisplaySettings),
