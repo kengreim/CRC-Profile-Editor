@@ -22,9 +22,9 @@ pub struct CrcProfile {
     pub messages_area_settings: InformationWindowSettings,
     pub voice_switch_settings: InformationWindowSettings,
     pub bookmarks: Vec<Value>,
-    pub selected_beacon_codes: Vec<Value>,
+    pub selected_beacon_codes: Vec<String>,
     pub invert_numeric_keypad: Option<bool>,
-    pub secondary_voice_switch_position_ids: Vec<Value>,
+    pub secondary_voice_switch_position_ids: Vec<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -163,8 +163,8 @@ pub struct EramDisplaySettings {
     pub requested_weather_reports: Vec<String>,
     pub altitude_limits_targets: AltitudeFilter,
     pub altitude_limits_ldbs: AltitudeFilter,
-    pub visible_markers: Vec<Value>,
-    pub visible_centerlines: Vec<Value>,
+    pub visible_markers: Vec<String>,
+    pub visible_centerlines: Vec<AirportRunway>,
     pub tearoffs: Vec<Tearoff>,
     pub master_toolbar_visible: bool,
     pub active_geo_map: String,
@@ -317,9 +317,9 @@ pub struct StarsPrefSet {
     pub selected_video_map_ids: Vec<i32>,
     pub altitude_filter_unassociated: AltitudeFilter,
     pub altitude_filter_associated: AltitudeFilter,
-    pub quick_looked_tcps: Vec<Value>,
+    pub quick_looked_tcps: Vec<Tcp>,
     pub quick_look_all: bool,
-    pub selected_beacon_codes: Vec<Value>,
+    pub selected_beacon_codes: Vec<String>,
     pub dcb_location: String,
 }
 
@@ -674,4 +674,19 @@ pub struct Tearoff {
     pub type_field2: String,
     pub id: String,
     pub location: Location,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+#[serde(deny_unknown_fields)]
+pub struct Tcp {
+    pub subset: i32,
+    pub sector_id: String,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct AirportRunway {
+    pub airport_id: String,
+    pub runway_id: String,
 }

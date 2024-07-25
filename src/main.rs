@@ -20,13 +20,8 @@ fn main() -> std::io::Result<()> {
                     .map_or(false, |ext| ext.eq_ignore_ascii_case("json"))
             })
         {
-            let filename = file.file_name();
-            println!("{filename:?}");
-
-            let mut file_path = profiles_dir.clone();
-            file_path.push(filename);
-
-            let mut x = File::open(file_path)?;
+            println!("{:?}", file.file_name());
+            let mut x = File::open(file.path())?;
             let mut contents = String::new();
             x.read_to_string(&mut contents)?;
             let jd = &mut serde_json::Deserializer::from_str(&contents);
