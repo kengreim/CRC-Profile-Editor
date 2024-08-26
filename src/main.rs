@@ -1,12 +1,12 @@
 #![warn(clippy::all, clippy::pedantic, clippy::nursery)]
+    mod crc;
 
 use std::ffi::OsString;
-use crate::crc_serde::CrcProfile;
 use std::fs::{read_dir, File};
 use std::io::Read;
 use std::path::Path;
-
-mod crc_serde;
+use crc::profile::CrcProfile;
+use crate::crc::artcc::ArtccRoot;
 
 fn extension_matches(path: &OsString, extension: &str) -> bool {
     Path::new(path)
@@ -14,7 +14,7 @@ fn extension_matches(path: &OsString, extension: &str) -> bool {
         .map_or(false, |ext| ext.eq_ignore_ascii_case(extension))
 }
 
-fn main() -> std::io::Result<()> {
+fn test_profiles() -> std::io::Result<()> {
     let mut profiles_dir = dirs::data_local_dir().unwrap();
     profiles_dir.push("CRC");
     profiles_dir.push("Profiles");
@@ -34,7 +34,18 @@ fn main() -> std::io::Result<()> {
                     let result: Result<CrcProfile, _> = serde_path_to_error::deserialize(jd);
 
                     match result {
-                        Ok(_) => println!("success"),
+                        Ok(profile) => {
+                            for window in profile.display_window_settings {
+                                for x in window.display_settings {
+                                    // match x {
+                                    //     DisplaySettings::Asdex(_) => {}
+                                    //     DisplaySettings::Stars(_) => {}
+                                    //     DisplaySettings::TowerCab(_) => {}
+                                    //     DisplaySettings::Eram(_) => {}
+                                    // }
+                                }
+                            }
+                        },
                         Err(err) => {
                             let path = err.path().to_string();
                             println!("{path}");
@@ -46,5 +57,23 @@ fn main() -> std::io::Result<()> {
         }
     }
 
+    Ok(())
+}
+
+async fn test_data() -> reqwest::Result<()> {
+    let artccs = reqwest::get("https://data-api.vnas.vatsim.net/api/artccs")
+        .await?
+        .json::<Vec<ArtccRoot>>()
+        .await?;
+    for artcc in artccs {
+        println!("{}", artcc.id);
+    }
+    Ok(())
+}
+
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    test_data().await?;
     Ok(())
 }

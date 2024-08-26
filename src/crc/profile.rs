@@ -408,14 +408,17 @@ pub struct Traits {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "PascalCase")]
 #[serde(deny_unknown_fields)]
 #[allow(clippy::struct_field_names)]
 pub struct Margins {
-    pub left_margin: Option<i32>,
-    pub right_margin: Option<i32>,
-    pub top_margin: Option<i32>,
-    pub bottom_margin: Option<i32>,
+    #[serde(rename = "LeftMargin")]
+    pub left: Option<i32>,
+    #[serde(rename = "RightMargin")]
+    pub right: Option<i32>,
+    #[serde(rename = "TopMargin")]
+    pub top: Option<i32>,
+    #[serde(rename = "BottomMargin")]
+    pub bottom: Option<i32>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -694,6 +697,7 @@ pub struct Tcp {
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
+#[serde(deny_unknown_fields)]
 pub struct AirportRunway {
     pub airport_id: String,
     pub runway_id: String,
